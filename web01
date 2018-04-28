@@ -1,0 +1,16 @@
+
+import requests
+
+def requests_view(response):                                ## 定义requests_view 函数
+    import webbrowser                                       ## 导入webbrowser库本地浏览器打开html文件
+    request_url = response.url                        
+    base_url = '<head><base href="%s">'%(request_url)       ## request_url添加base href标签，加载网页的静态资源
+    base_url = base_url.encode()                            ## base_url 转换为encode格式
+    content = response.content.replace(b"<head>",base_url)  ## response.content的<head>部分替换为base_url
+    tem_html = open('tmp.html','wb')                        ## 以wb模式创建打开tmp_html文件
+    tem_html.write(content)                                 ## 将content写入tem_html文件
+    tem_html.close()                                        ## close文件 
+    webbrowser.open_new_tab("tmp.html")                     ## 本地浏览器打开 tmp.html
+
+response = requests.get("http://tj.ganji.com/fang1/")
+requests_view(response)
